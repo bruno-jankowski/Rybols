@@ -17,7 +17,7 @@ fullImg = pygame.image.load('Emulator_Tkinter/Sprites/GUI/fullScreen.png')
 portal = pygame.image.load('Emulator_Tkinter/Sprites/GUI/portal.png')
 timeBoard = pygame.image.load('Emulator_Tkinter/Sprites/GUI/timeBilboard.png')
 mapBoard = pygame.image.load('Emulator_Tkinter/Sprites/GUI/map.png')
-enemyImg = [pygame.image.load('Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/donHit.png')]
+enemyImg = [pygame.image.load('Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/donHit.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/pixel.png')]
 maksiqImg = [pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqHit1.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqHit2.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqHit3.png') ,pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqTeleport.png')]
 bgZERO = pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg-1.jpg')
 bg = [pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg.jpg'), pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg3.png'),pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg5.jpg'),pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg4.png')]
@@ -166,7 +166,12 @@ class Enemy(object):
         elif self.etype == "LRr":
             win.blit(enemyImg[5], (self.x, self.y))
             if self.pokeView == False: 
-                self.moveLRr()    
+                self.moveLRr()  
+
+        elif self.etype == "Pix":
+            win.blit(enemyImg[7], (self.x, self.y))
+            if self.pokeView == False: 
+                self.moveLRr()   
             
         self.hitbox = (self.x, self.y, self.width, self.height) 
         #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)                       #//SEE COLISION
@@ -880,6 +885,9 @@ kaneki5 = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, random.r
 kanekiend = Enemy(0, 0, 24, 32, 250, "LRr", 4, 0)
 
 rybol = Enemy(100, 100, 24, 32, 100, "SQ", 0, 0)
+rybol4 = Enemy(50, 100, 24, 32, 100, "Pix", 0, 0)
+rybol5 = Enemy(0, 100, 24, 32, 100, "SQ", 0, 0)
+
 rybol1 = Enemy(100, 50, 24, 32, 35, "SQ", 2, 0)
 rybol2 = Enemy(random.randint(0,200), random.randint(0,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
 rybol3 = Enemy(random.randint(0,200), random.randint(0,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
@@ -889,7 +897,7 @@ don = Enemy(100, 160, 40, 40, 10, "LRDon", 2, 1)
 maksiq = Enemy(140,100, 40, 40, 0, "Maksiq",6, 4)
 
 bullets = []
-enemies = [rybolend, kaneki, kaneki1, kaneki2, kaneki3, kaneki4, kaneki5, rybol1, rybol2, rybol3, rybol, don, maksiq, kanekiend]
+enemies = [rybolend, kaneki, kaneki1, kaneki2, kaneki3, kaneki4, kaneki5, rybol1, rybol2, rybol3, rybol4, rybol5, rybol, don, maksiq, kanekiend]
 
 mucher = NPC(53, 55, 24, 32, -1, 0)
 mucher2 = NPC(110, 200, 24, 32, 4, 1)
