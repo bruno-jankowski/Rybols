@@ -31,7 +31,7 @@ characterUp = pygame.image.load('Emulator_Tkinter/Sprites/MC/characterUp.png')
 characterDown = pygame.image.load('Emulator_Tkinter/Sprites/MC/characterDown.png')
 
 drainggang = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/draingang.wav')
-drainggang.set_volume(0)
+drainggang.set_volume(0.5)
 drainggang.play()
 
 puff = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/puff.wav')
@@ -39,13 +39,13 @@ puff = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/puff.wav')
 sprint = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/sprint.wav')
 
 fresh = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/fresh.wav')
-fresh.set_volume(0)
+fresh.set_volume(0.5)
 
 music = pygame.mixer.music.load('Emulator_Tkinter/Sprites/SFx/music.mp3')
 
 
 
-pygame.mixer.music.set_volume(0)
+pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 
 
@@ -1109,7 +1109,7 @@ while run:
         if len(bullets) < 1:
             bullets.append(Projectile( man.x + 12, man.y + 12, 8, (202,69,211), facing))
         
-    if keys[pygame.K_a] and man.x>man.vel and canLeft:
+    if keys[pygame.K_LEFT] and man.x>man.vel and canLeft:
             man.x -= man.vel
             man.right = False
             man.left = True
@@ -1120,7 +1120,7 @@ while run:
             for bullet in bullets:
                 bullet.x += 5
         
-    elif keys[pygame.K_d] and man.x < windowWidth - man.vel - man.width and canRight:
+    elif keys[pygame.K_RIGHT] and man.x < windowWidth - man.vel - man.width and canRight:
             man.x += man.vel
             man.right = True
             man.left = False
@@ -1131,7 +1131,7 @@ while run:
             for bullet in bullets:
                 bullet.x -= 5
             
-    elif keys[pygame.K_w] and man.y > man.vel and canUp:
+    elif keys[pygame.K_UP] and man.y > man.vel and canUp:
             man.y -=  man.vel
             man.right = False
             man.left = False
@@ -1142,7 +1142,7 @@ while run:
             for bullet in bullets:
                 bullet.y += 5
         
-    elif keys[pygame.K_s] and man.y < windowHeight - man.vel - man.height and canDown:
+    elif keys[pygame.K_DOWN] and man.y < windowHeight - man.vel - man.height and canDown:
             man.y += man.vel
             man.right = False
             man.left = False
