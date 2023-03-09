@@ -9,39 +9,39 @@ scene = -1
 win = pygame.display.set_mode((windowWidth,windowHeight))
 pygame.display.set_caption("RYBOLAND")
 
-rybolbol = pygame.image.load('Sprites/GUI/Poke.png')
-ryboldex = pygame.image.load('Sprites/GUI/Ryboldex.png')
-ball = pygame.image.load('Sprites/GUI/ball.png')
-E = pygame.image.load('Sprites/GUI/E.png')
-fullImg = pygame.image.load('Sprites/GUI/fullScreen.png')
-portal = pygame.image.load('Sprites/GUI/portal.png')
-timeBoard = pygame.image.load('Sprites/GUI/timeBilboard.png')
-mapBoard = pygame.image.load('Sprites/GUI/map.png')
-enemyImg = [pygame.image.load('Sprites/Enemies/kaneki.png'),pygame.image.load('Sprites/Enemies/rybol.png'),pygame.image.load('Sprites/Enemies/rybolend.png'),pygame.image.load('Sprites/Enemies/don.png'),pygame.image.load('Sprites/Enemies/maksiq.png'), pygame.image.load('Sprites/Enemies/kanekiend.png'),pygame.image.load('Sprites/Enemies/donHit.png')]
-maksiqImg = [pygame.image.load('Sprites/Enemies/maksiqHit1.png'), pygame.image.load('Sprites/Enemies/maksiqHit2.png'), pygame.image.load('Sprites/Enemies/maksiqHit3.png') ,pygame.image.load('Sprites/Enemies/maksiqTeleport.png')]
-bgZERO = pygame.image.load('Sprites/Bg/bg-1.jpg')
-bg = [pygame.image.load('Sprites/Bg/bg.jpg'), pygame.image.load('Sprites/Bg/bg2.png'), pygame.image.load('Sprites/Bg/bg3.png'),pygame.image.load('Sprites/Bg/bg2.png'), pygame.image.load('Sprites/Bg/bg5.jpg'),pygame.image.load('Sprites/Bg/bg4.png')]
-npcImg = [pygame.image.load('Sprites/NPCs/mucher.png'), pygame.image.load('Sprites/NPCs/muchor.png')]
+rybolbol = pygame.image.load('Emulator_Tkinter/Sprites/GUI/poke.png')
+ryboldex = pygame.image.load('Emulator_Tkinter/Sprites/GUI/Ryboldex.png')
+ball = pygame.image.load('Emulator_Tkinter/Sprites/GUI/ball.png')
+E = pygame.image.load('Emulator_Tkinter/Sprites/GUI/E.png')
+fullImg = pygame.image.load('Emulator_Tkinter/Sprites/GUI/fullScreen.png')
+portal = pygame.image.load('Emulator_Tkinter/Sprites/GUI/portal.png')
+timeBoard = pygame.image.load('Emulator_Tkinter/Sprites/GUI/timeBilboard.png')
+mapBoard = pygame.image.load('Emulator_Tkinter/Sprites/GUI/map.png')
+enemyImg = [pygame.image.load('Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Emulator_Tkinter/Sprites/Enemies/donHit.png')]
+maksiqImg = [pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqHit1.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqHit2.png'), pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqHit3.png') ,pygame.image.load('Emulator_Tkinter/Sprites/Enemies/maksiqTeleport.png')]
+bgZERO = pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg-1.jpg')
+bg = [pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg.jpg'), pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg3.png'),pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg5.jpg'),pygame.image.load('Emulator_Tkinter/Sprites/Bg/bg4.png')]
+npcImg = [pygame.image.load('Emulator_Tkinter/Sprites/NPCs/mucher.png'), pygame.image.load('Emulator_Tkinter/Sprites/NPCs/muchor.png')]
 
 
-characterIdle = pygame.image.load('Sprites/MC/character.png')
-characterLeft = pygame.image.load('Sprites/MC/characterLeft.png')
-characterRight = pygame.image.load('Sprites/MC/characterRight.png')
-characterUp = pygame.image.load('Sprites/MC/characterUp.png')
-characterDown = pygame.image.load('Sprites/MC/characterDown.png')
+characterIdle = pygame.image.load('Emulator_Tkinter/Sprites/MC/character.png')
+characterLeft = pygame.image.load('Emulator_Tkinter/Sprites/MC/characterLeft.png')
+characterRight = pygame.image.load('Emulator_Tkinter/Sprites/MC/characterRight.png')
+characterUp = pygame.image.load('Emulator_Tkinter/Sprites/MC/characterUp.png')
+characterDown = pygame.image.load('Emulator_Tkinter/Sprites/MC/characterDown.png')
 
-drainggang = pygame.mixer.Sound('Sprites/SFx/draingang.wav')
+drainggang = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/draingang.wav')
 drainggang.set_volume(0)
 drainggang.play()
 
-puff = pygame.mixer.Sound('Sprites/SFx/puff.wav')
+puff = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/puff.wav')
 
-sprint = pygame.mixer.Sound('Sprites/SFx/sprint.wav')
+sprint = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/sprint.wav')
 
-fresh = pygame.mixer.Sound('Sprites/SFx/fresh.wav')
+fresh = pygame.mixer.Sound('Emulator_Tkinter/Sprites/SFx/fresh.wav')
 fresh.set_volume(0)
 
-music = pygame.mixer.music.load('Sprites/SFx/music.mp3')
+music = pygame.mixer.music.load('Emulator_Tkinter/Sprites/SFx/music.mp3')
 
 
 
