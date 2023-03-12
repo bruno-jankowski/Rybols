@@ -1,5 +1,8 @@
 import pygame, sys
 import random
+import datetime
+import re
+
 pygame.init()
 
 windowWidth = 300
@@ -58,6 +61,8 @@ canLeft = True
 canDown = True
 canUp = True
 
+highlight = 0
+isRecord = False
 timeFin = 0
 score = 0
 dialogue = 0
@@ -255,7 +260,7 @@ class Enemy(object):
                 pygame.time.delay(50)
                 
     def hit(self):
-        global timeFin, winCon
+        global timeFin, winCon, highlight, isRecord
         if self.shield > 0:
             self.shield -= 1
             print("block")
@@ -267,6 +272,25 @@ class Enemy(object):
                 fresh.play()
                 timeFin = currentTime
                 winCon = True
+                with open("Rybols/Emulator_Tkinter/scores.txt", "a") as file:
+                    date = datetime.datetime.now() 
+                    date = str(date)
+                    date = date[:16]
+                    file.write(f'Time: {timeFin}s date: {date}\n')
+
+                with open("Rybols/Emulator_Tkinter/scores.txt", "r") as file:
+                    lines = file.read().splitlines()
+                    values = []
+                    for line in lines:
+                        print(line)
+                        match = re.search(r'Time: (\d+)s', line) ##digits between the Time: and s (including spaces)
+                        if match:
+                            values.append(int(match.group(1)))
+                    highlight = min(values)
+                    if timeFin == highlight:
+                        isRecord = True 
+                    
+                    
                 
             
         
@@ -407,6 +431,8 @@ def redrawGameWindow():
     textTime = scoreFont.render('Time: ' + str(currentTime), 1, (250,250,250))
     textWin = scoreWin.render('! You Won !', 1, (100,255,0))
     textWin1 = scoreWin.render('Time: ' + str(timeFin), 1, (100,255,0))
+    textWin2 = scoreWin.render('NEW RECORD ', 1, (255,0,0))
+    textHigh = scoreWin.render('Best: ' + str(highlight), 1, (100,255,0))
     textShift = scoreFont1.render('Press Shift For Mushroom', 1, (250,250,250))
     win.blit(fullImg, (0,0))
     if scene == -1:          
@@ -857,6 +883,9 @@ def redrawGameWindow():
             man.y = windowHeight//2 - 20
             win.blit(textWin, (50,50))
             win.blit(textWin1, (50,125))
+            win.blit(textHigh, (50, 200))
+            if isRecord:
+                win.blit(textWin2, (30, 0))
         else:
             win.blit(textTime, (220,0))
             
