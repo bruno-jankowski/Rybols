@@ -86,7 +86,8 @@ class Player(object):
         self.isStanding = True
         self.hitbox = (self.x + 20, self.y, 24, 24)  
         self.isHit = False
-        self.life = 3
+        self.life = 4
+        self.isShield = False
         ##Defines the hitbox it atributes will be refered as an list
         
     def draw(self, win): 
@@ -112,16 +113,24 @@ class Player(object):
         #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)                        ##//SEE COLISION        
 
     def check(self):
-        if self.isHit == True and self.life > 0:
+        global canRight, canLeft, canUp, canDown
+        if self.isShield:
+            pygame.draw.rect(win, (255,0,0), (self.hitbox))
+            canRight = False
+            canLeft = False
+            canDown = False
+            canUp = False
+        if self.isHit == True and self.life > 0 and self.isShield == False:
             print("Attack")
             self.x = 100
             self.y = 20  
             self.life -= 1
             print(self.life)
-            self.isHit = False
             if self.life == 0:
                 print("lose")
                 self.die()
+        self.isShield = False
+        self.isHit = False
 
     def die(self):
         global scene
@@ -200,7 +209,7 @@ class Enemy(object):
             if self.pokeView == False: 
                 self.moveLRr()   
             
-        self.hitbox = (self.x, self.y+10, self.width, self.height-10) 
+        self.hitbox = (self.x, self.y+5, self.width-5, self.height-10) 
         #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)   
         self.check(man)                              #//SEE COLISION
 
@@ -261,7 +270,7 @@ class Enemy(object):
                 self.stage = 0
                 
     def moveMaq(self):
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] or keys[pygame.K_LSHIFT]:
             randomInt = random.randint(0,7)
             randomXY = random.randint(50, 200)
             if randomInt <= 1 and self.y > 100 :
@@ -464,6 +473,7 @@ def redrawGameWindow():
     textHigh = scoreWin.render('Best: ' + str(highlight), 1, (100,255,0))
     textShift = scoreFont1.render('Press Shift For Mushroom', 1, (250,250,250))
     win.blit(fullImg, (0,0))
+
     if scene == -2:
         win.fill(endscreen_color)
         man.draw(win)
@@ -974,8 +984,8 @@ rybol4 = Enemy(50, 100, 24, 32, 100, "Pix", 0, 0)
 rybol5 = Enemy(0, 100, 24, 32, 100, "SQ", 0, 0)
 
 rybol1 = Enemy(100, 50, 24, 32, 35, "SQ", 2, 0)
-rybol2 = Enemy(random.randint(0,200), random.randint(0,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
-rybol3 = Enemy(random.randint(0,200), random.randint(0,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
+rybol2 = Enemy(random.randint(70,200), random.randint(50,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
+rybol3 = Enemy(random.randint(70,200), random.randint(50,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
 
 
 don = Enemy(100, 160, 40, 40, 10, "LRDon", 2, 1)
@@ -984,7 +994,7 @@ maksiq = Enemy(140,100, 40, 40, 0, "Maksiq",6, 4)
 bullets = []
 enemies = [rybolend, kaneki, kaneki1, kaneki2, kaneki3, kaneki4, kaneki5, rybol1, rybol2, rybol3, rybol4, rybol5, rybol, don, maksiq, kanekiend]
 
-mucher = NPC(53, 55, 24, 32, -1, 0)
+mucher = NPC(280, 100, 24, 32, -1, 0)
 mucher2 = NPC(110, 200, 24, 32, 4, 1)
 
 
@@ -1021,9 +1031,7 @@ while run:
     clock.tick(18)
     
     currentTime = pygame.time.get_ticks()//1000
-    
-    
-    
+
     for event in pygame.event.get():
         
         if event.type == pygame.KEYDOWN:
@@ -1157,15 +1165,7 @@ while run:
                 man.y = colliders[collider].y - 25
                   
     if keys[pygame.K_LSHIFT]  and scene == 6:
-        if man.left:
-            man.x -= 10
-        if man.right:
-            man.x += 10
-        if man.up:
-            man.y -= 10
-        if man.down:
-            man.y += 10
-        
+        man.isShield = True
         
         
     if keys[pygame.K_p] and isFullscreen == False:
