@@ -2,11 +2,13 @@ import pygame, sys
 import random
 import datetime
 import re
+import time
 
 pygame.init()
 
 windowWidth = 300
 windowHeight = 260
+endscreen_color = (0, 0, 0)
 scene = -1
 
 win = pygame.display.set_mode((windowWidth,windowHeight))
@@ -83,6 +85,8 @@ class Player(object):
         self.shoot = False
         self.isStanding = True
         self.hitbox = (self.x + 20, self.y, 24, 24)  
+        self.isHit = False
+        self.life = 3
         ##Defines the hitbox it atributes will be refered as an list
         
     def draw(self, win): 
@@ -104,7 +108,25 @@ class Player(object):
             win.blit(characterIdle, (self.x,self.y))
         
         self.hitbox = (self.x, self.y, 24, 24) 
-        #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)                        //SEE COLISION        
+        self.check()
+        #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)                        ##//SEE COLISION        
+
+    def check(self):
+        if self.isHit == True and self.life > 0:
+            print("Attack")
+            self.x = 100
+            self.y = 20  
+            self.life -= 1
+            print(self.life)
+            self.isHit = False
+            if self.life == 0:
+                print("lose")
+                self.die()
+
+    def die(self):
+        global scene
+        scene = -2
+
 
 class Enemy(object):
     def __init__(self, x, y, width, height, erange, etype, scene, shield):
@@ -123,7 +145,7 @@ class Enemy(object):
         self.isDead = False  
         self.pokeView = False  
         self.scene = scene   
-        self.shield = shield 
+        self.shield = shield
                 ##Define hitbox
         
     def draw(self, win):  
@@ -178,9 +200,15 @@ class Enemy(object):
             if self.pokeView == False: 
                 self.moveLRr()   
             
-        self.hitbox = (self.x, self.y, self.width, self.height) 
-        #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)                       #//SEE COLISION
-    
+        self.hitbox = (self.x, self.y+10, self.width, self.height-10) 
+        #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)   
+        self.check(man)                              #//SEE COLISION
+
+    def check(self, character):
+        if character.x < self.x + self.width and character.x + character.width > self.x:
+            if character.y < self.y + self.height and character.y  + character.height > self.y:
+                character.isHit = True
+
     def moveLR(self):                                                            ##Loop for moving left and right
         if self.vel > 0:
             if self.x < self.pathx[1] + self.vel: 
@@ -285,7 +313,7 @@ class Enemy(object):
                         print(line)
                         match = re.search(r'Time: (\d+)s', line) ##digits between the Time: and s (including spaces)
                         if match:
-                            values.append(int(match.group(1)))
+                            values.append(int(match.group(1))) ##group one is the match so \d if we had more \d then more groups ## also int()
                     highlight = min(values)
                     if timeFin == highlight:
                         isRecord = True 
@@ -430,11 +458,19 @@ def redrawGameWindow():
     text = scoreFont.render('Rybols: ' + str(score), 1, (250,250,250))
     textTime = scoreFont.render('Time: ' + str(currentTime), 1, (250,250,250))
     textWin = scoreWin.render('! You Won !', 1, (100,255,0))
+    textDie = scoreWin.render('! You Died !', 1, (250,0,0))
     textWin1 = scoreWin.render('Time: ' + str(timeFin), 1, (100,255,0))
     textWin2 = scoreWin.render('NEW RECORD ', 1, (255,0,0))
     textHigh = scoreWin.render('Best: ' + str(highlight), 1, (100,255,0))
     textShift = scoreFont1.render('Press Shift For Mushroom', 1, (250,250,250))
     win.blit(fullImg, (0,0))
+    if scene == -2:
+        win.fill(endscreen_color)
+        man.draw(win)
+        man.x = windowWidth//2 - 10
+        man.y = windowHeight//2 
+        win.blit(textDie, (40,50))
+        
     if scene == -1:          
         
                                     ##Mainscene 
@@ -517,7 +553,10 @@ def redrawGameWindow():
         win.blit(text, (1,1))
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
-        
+        x_life = 100
+        for life in range(man.life):
+            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
+            x_life += 10
         
         man.draw(win)
             
@@ -610,6 +649,10 @@ def redrawGameWindow():
         
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
+        x_life = 100
+        for life in range(man.life):
+            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
+            x_life += 10
         
     elif scene == 3:
         
@@ -673,7 +716,10 @@ def redrawGameWindow():
         man.draw(win)
         win.blit(timeBoard, (0, 0))
         win.blit(text, (1,1))
-        
+        x_life = 100
+        for life in range(man.life):
+            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
+            x_life += 10
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
             
@@ -746,7 +792,10 @@ def redrawGameWindow():
         man.draw(win)
         win.blit(timeBoard, (0, 0))
         win.blit(text, (1,1))
-        
+        x_life = 100
+        for life in range(man.life):
+            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
+            x_life += 10
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
             
@@ -812,7 +861,10 @@ def redrawGameWindow():
         man.draw(win)
         win.blit(timeBoard, (0, 0))
         win.blit(text, (1,1))
-        
+        x_life = 100
+        for life in range(man.life):
+            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
+            x_life += 10
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
         
@@ -877,6 +929,10 @@ def redrawGameWindow():
             
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
+        x_life = 100
+        for life in range(man.life):
+            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
+            x_life += 10
         
         if winCon:
             man.x = windowWidth//2 - 10
@@ -982,8 +1038,7 @@ while run:
                 
             if event.key == pygame.K_ESCAPE:
                 run = False
-            
-        
+
         if event.type == pygame.QUIT:
             run = False
             
