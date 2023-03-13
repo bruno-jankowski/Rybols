@@ -14,6 +14,9 @@ scene = -1
 win = pygame.display.set_mode((windowWidth,windowHeight))
 pygame.display.set_caption("RYBOLAND")
 
+
+heart = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/heart.png')
+shield = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/shield.png')
 rybolbol = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/poke.png')
 ryboldex = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/Ryboldex.png')
 ball = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/ball.png')
@@ -22,7 +25,7 @@ fullImg = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/fullScreen.png'
 portal = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/portal.png')
 timeBoard = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/timeBilboard.png')
 mapBoard = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/map.png')
-enemyImg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/donHit.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/pixel.png')]
+enemyImg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/donHit.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/mword.png')]
 maksiqImg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqHit1.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqHit2.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqHit3.png') ,pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqTeleport.png')]
 bgZERO = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg-1.jpg')
 bg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg.jpg'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg3.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg5.jpg'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg4.png')]
@@ -62,6 +65,7 @@ canRight = True
 canLeft = True
 canDown = True
 canUp = True
+canShoot = True 
 
 highlight = 0
 isRecord = False
@@ -86,7 +90,7 @@ class Player(object):
         self.isStanding = True
         self.hitbox = (self.x + 20, self.y, 24, 24)  
         self.isHit = False
-        self.life = 4
+        self.life = 5
         self.isShield = False
         ##Defines the hitbox it atributes will be refered as an list
         
@@ -113,13 +117,14 @@ class Player(object):
         #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)                        ##//SEE COLISION        
 
     def check(self):
-        global canRight, canLeft, canUp, canDown
+        global canRight, canLeft, canUp, canDown, canShoot
         if self.isShield:
-            pygame.draw.rect(win, (255,0,0), (self.hitbox))
+            win.blit(shield, (self.x, self.y))
             canRight = False
             canLeft = False
             canDown = False
             canUp = False
+            canShoot = False
         if self.isHit == True and self.life > 0 and self.isShield == False:
             print("Attack")
             self.x = 100
@@ -131,6 +136,7 @@ class Player(object):
                 self.die()
         self.isShield = False
         self.isHit = False
+        canShoot = True
 
     def die(self):
         global scene
@@ -350,17 +356,18 @@ class Projectile(object):
         
         
 class Collider(object):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height, scene):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.isHit = False
+        self.scene = scene 
         
     def draw(self, win):                                                             
 #        self.hitbox = (self.x, self.y, 24, 24) 
           #draws colliders!!!
-        #pygame.draw.rect(win, (0,255,0), (self.x, self.y, self.width, self.height), 2)  
+        pygame.draw.rect(win, (0,255,0), (self.x, self.y, self.width, self.height), 2)  
         self.check(man)
         
     def check(self, character):
@@ -448,14 +455,14 @@ class SceneChecker(object):
                 character.up = False
                 character.down = False
                 if self.side == 0:
-                    character.x  = 30
+                    character.x  = 50
                     character.y = windowHeight//2
                 elif self.side == 1:
                     character.x  = 230
                     character.y = windowHeight//2
                 elif self.side == 2:
-                    character.y  = 30
-                    character.x = windowWidth//2
+                    character.y  = 50
+                    character.x = windowWidth//2-50
                 elif self.side == 3:
                     character.y  = 200
                     character.x = windowWidth//2
@@ -552,7 +559,8 @@ def redrawGameWindow():
             
         #Objects with hitobox
         for collider in range(len(colliders)):
-            colliders[collider].draw(win)  
+            if colliders[collider].scene == scene:
+                colliders[collider].draw(win)  
             
         #Checks
         if len(deadEnemies) == len(enemiesInScene):  
@@ -563,10 +571,10 @@ def redrawGameWindow():
         win.blit(text, (1,1))
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
-        x_life = 100
+        x_life = 125
         for life in range(man.life):
-            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
-            x_life += 10
+            win.blit(heart, (x_life, 10))
+            x_life += 11
         
         man.draw(win)
             
@@ -646,6 +654,11 @@ def redrawGameWindow():
         for npc in range(len(npcs)):
             if npcs[npc].scene == scene:
                 npcs[npc].draw(win)
+
+        #Objects with hitobox
+        for collider in range(len(colliders)):
+            if colliders[collider].scene == scene:
+                colliders[collider].draw(win)  
         
        #Checks
         if len(deadEnemies) == len(enemiesInScene):  
@@ -659,10 +672,10 @@ def redrawGameWindow():
         
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
-        x_life = 100
+        x_life = 125
         for life in range(man.life):
-            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
-            x_life += 10
+            win.blit(heart, (x_life, 10))
+            x_life += 11
         
     elif scene == 3:
         
@@ -715,6 +728,11 @@ def redrawGameWindow():
             if npcs[npc].scene == scene:
                 npcs[npc].draw(win)
         
+        #   Objects with hitobox
+        for collider in range(len(colliders)):
+            if colliders[collider].scene == scene:
+                colliders[collider].draw(win)   
+
         #Checks
         #where to
         if len(deadEnemies) == len(enemiesInScene):  
@@ -726,10 +744,10 @@ def redrawGameWindow():
         man.draw(win)
         win.blit(timeBoard, (0, 0))
         win.blit(text, (1,1))
-        x_life = 100
+        x_life = 125
         for life in range(man.life):
-            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
-            x_life += 10
+            win.blit(heart, (x_life, 10))
+            x_life += 11
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
             
@@ -778,7 +796,10 @@ def redrawGameWindow():
         for i in range(len(enemies)):
             if enemies[i].isDead == False and enemies[i].scene == scene:                                           ##If enemy is not dead display him
                 enemies[i].draw(win)
-        
+        #Objects with hitobox
+        for collider in range(len(colliders)):
+            if colliders[collider].scene == scene:
+                colliders[collider].draw(win)  
         #NPCS
         for npc in range(len(npcs)):
             if npcs[npc].scene == scene:
@@ -787,7 +808,7 @@ def redrawGameWindow():
         #Checks
         #where to
         
-        if len(deadEnemies) == len(enemiesInScene): 
+        if len(deadEnemies) >= len(enemiesInScene): 
             sceneNew3.x = 100
             sceneNew3.y = 0
             sceneNew3.draw(win)
@@ -795,17 +816,17 @@ def redrawGameWindow():
             sceneNew5.y = 160
             sceneNew5.side = 0
             sceneNew5.draw(win)
-            if len(deadEnemies) == len(enemies)-1: 
+            if len(deadEnemies) >= len(enemies)-2: 
                 sceneNew6.y = 230
                 sceneNew6.draw(win)
             
         man.draw(win)
         win.blit(timeBoard, (0, 0))
         win.blit(text, (1,1))
-        x_life = 100
+        x_life = 125
         for life in range(man.life):
-            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
-            x_life += 10
+            win.blit(heart, (x_life, 10))
+            x_life += 11
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
             
@@ -858,7 +879,11 @@ def redrawGameWindow():
         for npc in range(len(npcs)):
             if npcs[npc].scene == scene:
                 npcs[npc].draw(win)
-        
+
+        #Objects with hitobox
+        for collider in range(len(colliders)):
+            if colliders[collider].scene == scene:
+                colliders[collider].draw(win)  
         #Checks
         #where to
         
@@ -871,10 +896,10 @@ def redrawGameWindow():
         man.draw(win)
         win.blit(timeBoard, (0, 0))
         win.blit(text, (1,1))
-        x_life = 100
+        x_life = 125
         for life in range(man.life):
-            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
-            x_life += 10
+            win.blit(heart, (x_life, 10))
+            x_life += 11
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
         
@@ -939,10 +964,10 @@ def redrawGameWindow():
             
         win.blit(timeBoard, (210, 2))
         win.blit(textTime, (222,2))
-        x_life = 100
+        x_life = 125
         for life in range(man.life):
-            pygame.draw.rect(win, (255,0,0), (x_life, 10, 9, 9))
-            x_life += 10
+            win.blit(heart, (x_life, 10))
+            x_life += 11
         
         if winCon:
             man.x = windowWidth//2 - 10
@@ -970,29 +995,31 @@ man = Player(215,90, 24, 24)
 #enemies
 rybolend = Enemy(10, 0, 24, 32, 210, "SQr", 3, 0)
 
-kaneki = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, 20, "LR", 0, 0)
-kaneki1 = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, 30, "LR", random.randint(2,3), 0)
-kaneki2 = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, 5, "LR", random.randint(2,3), 0)
-kaneki3 = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, random.randint(0,50), "LR", random.randint(2,5), 0)
-kaneki4 = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, random.randint(0,50), "LR", random.randint(2,5), 0)
-kaneki5 = Enemy(random.randint(50,150), random.randint(50,150), 24, 32, random.randint(0,50), "LR", random.randint(2,5), 0)
+kaneki = Enemy( 100, 50, 24, 32, 20, "LR", 0, 0)
+kaneki1 = Enemy(random.randint(70,110), random.randint(50,150), 24, 32, 30, "LR", random.randint(2,3), 0)
+kaneki2 = Enemy(random.randint(70,110), random.randint(50,150), 24, 32, 5, "LR", random.randint(2,3), 0)
+kaneki3 = Enemy(random.randint(70,110), random.randint(50,150), 24, 32, random.randint(0,30), "LR", random.randint(2,5), 0)
+kaneki4 = Enemy(random.randint(70,110), random.randint(50,150), 24, 32, random.randint(0,20), "LR", random.randint(2,5), 0)
+kaneki5 = Enemy(random.randint(70,150), random.randint(50,150), 24, 32, random.randint(10,50), "LR", random.randint(2,4), 0)
 
 kanekiend = Enemy(0, 0, 24, 32, 250, "LRr", 4, 0)
 
 rybol = Enemy(100, 100, 24, 32, 100, "SQ", 0, 0)
-rybol4 = Enemy(50, 100, 24, 32, 100, "Pix", 0, 0)
+mword = Enemy(50, 100, 24, 32, 100, "Pix", 5, 0)
 rybol5 = Enemy(0, 100, 24, 32, 100, "SQ", 0, 0)
 
 rybol1 = Enemy(100, 50, 24, 32, 35, "SQ", 2, 0)
-rybol2 = Enemy(random.randint(70,200), random.randint(50,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
-rybol3 = Enemy(random.randint(70,200), random.randint(50,200), 24, 32, random.randint(0,50), "SQ", 5, 0)
+rybol2 = Enemy(random.randint(130,140), random.randint(50,200), 24, 32, 12, "SQ", 5, 0)
+rybol3 = Enemy(random.randint(130,140), random.randint(50,200), 24, 32, 16, "SQ", 5, 0)
+rybol4 = Enemy(random.randint(130,140), random.randint(100,200), 24, 32, 12, "SQ", 5, 0)
+rybol5 = Enemy(random.randint(130,140), random.randint(50,100), 24, 32, 16, "SQ", 5, 0)
 
 
 don = Enemy(100, 160, 40, 40, 10, "LRDon", 2, 1)
 maksiq = Enemy(140,100, 40, 40, 0, "Maksiq",6, 4)
 
 bullets = []
-enemies = [rybolend, kaneki, kaneki1, kaneki2, kaneki3, kaneki4, kaneki5, rybol1, rybol2, rybol3, rybol4, rybol5, rybol, don, maksiq, kanekiend]
+enemies = [rybolend, kaneki, kaneki1, kaneki2, kaneki3, kaneki4, kaneki5, rybol1, rybol2, rybol3, rybol4, rybol5, mword, rybol5, rybol, don, maksiq, kanekiend]
 
 mucher = NPC(280, 100, 24, 32, -1, 0)
 mucher2 = NPC(110, 200, 24, 32, 4, 1)
@@ -1008,11 +1035,14 @@ deadEnemies = []
 enemiesInScene = []  
 #objects with hitboxes
 
-house = Collider(0,35,50,50)
-house1 = Collider(0,200,50,50)
-house2 = Collider(190,25,100, 60)
-house3 = Collider(120, 160, 170, 110)
-colliders = [house, house1, house2, house3]
+house = Collider(0,35,50,50, 0)
+house1 = Collider(0,200,50,50, 0)
+house2 = Collider(190,25,100, 60, 0)
+house3 = Collider(120, 160, 170, 110, 0)
+house4 = Collider(0,35,50,50, 2)
+house5 = Collider(0,0,50,300, 3)
+sea = Collider(140,0,200,300, 5)
+colliders = [house, house1, house2, house3, house4, house5, sea]
 
 #checks
 #in order 
@@ -1198,7 +1228,7 @@ while run:
             facing = 1
             
         shootBullet = True
-        if len(bullets) < 1:
+        if len(bullets) < 1 and canShoot == True and man.isShield == False:
             bullets.append(Projectile( man.x + 12, man.y + 12, 8, (202,69,211), facing))
         
     if keys[pygame.K_LEFT] and man.x>man.vel and canLeft:
