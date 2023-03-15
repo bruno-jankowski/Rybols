@@ -370,9 +370,9 @@ class Collider(object):
         self.scene = scene 
         
     def draw(self, win):                                                             
-        #self.hitbox = (self.x, self.y, 24, 24) 
-        #draws colliders!!!
-        #pygame.draw.rect(win, (0,255,0), (self.x, self.y, self.width, self.height), 2)  
+#        self.hitbox = (self.x, self.y, 24, 24) 
+          #draws colliders!!!
+        pygame.draw.rect(win, (0,255,0), (self.x, self.y, self.width, self.height), 2)  
         self.check(man)
         
     def check(self, character):
@@ -1074,6 +1074,7 @@ while run:
                 win = pygame.display.set_mode((windowHeight, windowWidth), pygame.FULLSCREEN)
                 isFullscreen = True
                 fullClicked = True
+                pygame.mouse.set_pos(-50,-50) 
             elif event.key == pygame.K_f and fullClicked == True:
                 win = pygame.display.set_mode((windowWidth, windowHeight))
                 isFullscreen = False
