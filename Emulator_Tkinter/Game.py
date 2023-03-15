@@ -25,7 +25,7 @@ fullImg = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/fullScreen.png'
 portal = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/portal.png')
 timeBoard = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/timeBilboard.png')
 mapBoard = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/GUI/map.png')
-enemyImg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/donHit.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/mword.png')]
+enemyImg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kaneki.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybol.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybolend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/don.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiq.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/kanekiend.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/donHit.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/mword.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/rybol2.png')]
 maksiqImg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqHit1.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqHit2.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqHit3.png') ,pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Enemies/maksiqTeleport.png')]
 bgZERO = pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg-1.jpg')
 bg = [pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg.jpg'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg3.png'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg2.png'), pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg5.jpg'),pygame.image.load('Rybols/Emulator_Tkinter/Sprites/Bg/bg4.png')]
@@ -161,12 +161,17 @@ class Enemy(object):
         self.pokeView = False  
         self.scene = scene   
         self.shield = shield
+        if self.etype == "SQ":
+            self.randomColor = random.randint(1,2)
                 ##Define hitbox
         
     def draw(self, win):  
                                                                                             ##Type of enemy and adding asocieted photo
-        if self.etype == "SQ":  
-            win.blit(enemyImg[1], (self.x, self.y))    
+        if self.etype == "SQ": 
+            if self.randomColor == 1:
+                win.blit(enemyImg[1], (self.x, self.y))    
+            else:
+                win.blit(enemyImg[8], (self.x, self.y))    
             if self.pokeView == False:                                                  ##Type of enemy and asocieted pattern
                 self.moveSq()
                 
