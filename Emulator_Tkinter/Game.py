@@ -42,7 +42,7 @@ drainggang = pygame.mixer.Sound('Rybols/Emulator_Tkinter/Sprites/SFx/draingang.w
 drainggang.set_volume(0.5)
 drainggang.play()
 
-puff = pygame.mixer.Sound('Rybols/Emulator_Tkinter/Sprites/SFx/puff.wav')
+puff = pygame.mixer.Sound('Rybols/Emulator_Tkinter/Sprites/SFx/muchor1.wav')
 
 sprint = pygame.mixer.Sound('Rybols/Emulator_Tkinter/Sprites/SFx/sprint.wav')
 
@@ -167,7 +167,7 @@ class Enemy(object):
         
     def draw(self, win):  
                                                                                             ##Type of enemy and adding asocieted photo
-        if self.etype == "SQ": 
+        if self.etype == "SQ":
             if self.randomColor == 1:
                 win.blit(enemyImg[1], (self.x, self.y))    
             else:
